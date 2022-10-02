@@ -17,14 +17,17 @@
                         <v-row>
                             <v-col cols="5">
                                 <v-select
-                                    :items="items"
-                                    v-model="todo.typeId"
+                                    dense
+                                    outlined
+                                    label="Тип"
                                     name="name"
                                     item-text="name"
                                     item-value="id"
-                                    label="Тип"
-                                    dense
-                                    outlined
+                                    :items="items"
+                                    v-model="todo.typeId"
+                                    :error-messages="typeErrors"
+                                    @input="$v.todo.typeId.$touch()"
+                                    @blur="$v.todo.typeId.$touch()"
                                 />
                             </v-col>
                             <v-col cols="12">
@@ -90,7 +93,24 @@
         mixins: [validationMixin],
         validations: {
             todo: {
-                title: {required}
+                title: {required},
+                typeId: {required}
+            }
+        },
+        data() {
+            return {
+                errors: [],
+                typeError: [],
+                items: [
+                    {id: 1, name: 'Задача'},
+                    {id: 2, name: 'Баг'}
+                ],
+                todo: {
+                    title: null,
+                    description: null,
+                    typeId: 0,
+                    statusId: 1
+                },
             }
         },
         computed: {
@@ -102,21 +122,14 @@
                     this.errors = []
                     return this.errors
                 }
-            }
-        },
-        data() {
-            return {
-                errors: [],
-                items: [
-                    {id: 1, name: 'Задача'},
-                    {id: 2, name: 'Баг'}
-                ],
-                todo: {
-                    title: null,
-                    description: null,
-                    typeId: 1,
-                    statusId: 1
-                },
+            },
+            typeErrors() {
+                if (!this.$v.todo.typeId.$dirty || !this.$v.todo.typeId.required && this.typeError.push('')) {
+                    return this.typeError
+                } else {
+                    this.typeError = []
+                    return this.typeError
+                }
             }
         },
         methods: {
@@ -125,7 +138,8 @@
             },
             hasErrors() {
                 if (!this.todo.title) this.errors.push('')
-                return this.errors.length > 0;
+                if (!this.todo.typeId) this.typeError.push('')
+                return this.errors.length > 0 || this.typeError.length > 0;
             },
             save() {
                 if (!this.hasErrors()) {
