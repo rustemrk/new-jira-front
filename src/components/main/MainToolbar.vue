@@ -16,7 +16,24 @@
                 <v-icon>mdi-plus</v-icon>
             </v-btn>
         </v-toolbar>
-        <todo-modal v-if="show" :show="show" @close="show = !show"/>
+        <todo-modal
+            v-if="show"
+            :show="show"
+            @close="show = !show"
+            @snackbar="snackbar = !snackbar"
+        />
+        <v-snackbar
+            v-model="snackbar"
+            :timeout="snackbarTimeOut"
+            right
+            bottom
+            absolute
+            color="primary"
+            elevation="0"
+            transition="scroll-y-transition"
+        >
+            {{ snackbarText }}
+        </v-snackbar>
     </div>
 </template>
 
@@ -30,6 +47,9 @@
         data() {
             return {
                 show: false,
+                snackbar: false,
+                snackbarText: 'Задача добавлена',
+                snackbarTimeOut: 1500
             }
         },
         methods: {

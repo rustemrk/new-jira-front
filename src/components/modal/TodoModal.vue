@@ -8,14 +8,14 @@
             <v-card>
                 <v-card-title>
                     <v-col cols="6">
-                        <span class="text-h5">Создание задачи</span>
+                        <span class="text-h6">Создание задачи</span>
                     </v-col>
                 </v-card-title>
 
                 <v-card-text>
                     <v-container>
                         <v-row>
-                            <v-col cols="6">
+                            <v-col cols="5">
                                 <v-select
                                     :items="items"
                                     v-model="todo.typeId"
@@ -28,15 +28,19 @@
                                 />
                             </v-col>
                             <v-col cols="12">
-                                <v-text-field
-                                    dense
-                                    label="Заголовок"
-                                    v-model="todo.title"
-                                    :rules="rules.title"
-                                    outlined
-                                    autofocus
-                                    clearable
-                                />
+                                <v-form ref="form">
+                                    <v-text-field
+                                        dense
+                                        outlined
+                                        clearable
+                                        clear-icon="mdi-close-circle-outline"
+                                        label="Заголовок"
+                                        v-model.trim="todo.title"
+                                        :error-messages="titleErrors"
+                                        @input="$v.todo.title.$touch()"
+                                        @blur="$v.todo.title.$touch()"
+                                    />
+                                </v-form>
                             </v-col>
 
                             <v-col cols="12">
@@ -52,15 +56,17 @@
                 <v-card-actions>
                     <v-spacer/>
                     <v-btn
-                        color="blue darken-1"
                         text
+                        color="primary"
+                        elevation="0"
                         @click="closeModal"
                     >
                         Отмена
                     </v-btn>
                     <v-btn
-                        color="blue darken-1"
                         dark
+                        elevation="0"
+                        color="primary"
                         @click="save"
                     >
                         Создать
@@ -68,59 +74,66 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-snackbar
-            v-model="snackbar"
-            :timeout="snackbarTimeOut"
-            absolute
-            transition="scroll-y-transition"
-            elevation="0"
-            bottom
-            right
-            color="primary"
-        >
-            {{ snackbarText }}
-        </v-snackbar>
     </div>
 </template>
 
 <script>
     import todoApi from "@/api/todoApi";
+    import {validationMixin} from 'vuelidate'
+    import {required} from 'vuelidate/lib/validators'
 
     export default {
         name: "TodoModal",
         props: {
             show: {type: Boolean, default: false},
         },
+        mixins: [validationMixin],
+        validations: {
+            todo: {
+                title: {required}
+            }
+        },
+        computed: {
+            titleErrors() {
+                if (!this.$v.todo.title.$dirty ||
+                    !this.$v.todo.title.required && this.errors.push('')) {
+                    return this.errors
+                } else {
+                    this.errors = []
+                    return this.errors
+                }
+            }
+        },
         data() {
             return {
+                errors: [],
                 items: [
                     {id: 1, name: 'Задача'},
                     {id: 2, name: 'Баг'}
                 ],
-                valid: true,
                 todo: {
                     title: null,
                     description: null,
                     typeId: 1,
                     statusId: 1
                 },
-                rules: {
-                    title: [val => (val || '').length > 0 || ''],
-                },
-                snackbar: false,
-                snackbarText: 'Задача добавлена',
-                snackbarTimeOut: 1500
             }
         },
         methods: {
             closeModal() {
                 this.$emit("close");
             },
+            hasErrors() {
+                if (!this.todo.title) this.errors.push('')
+                return this.errors.length > 0;
+            },
             save() {
-                todoApi.save(this.todo).then(() => {
-                    this.$emit("close");
-                    this.snackbar = !this.snackbar;
-                })
+                if (!this.hasErrors()) {
+                    todoApi.save(this.todo).then(() => {
+                        this.$emit("close");
+                        this.$emit("snackbar");
+                    })
+                }
             },
         }
     }
