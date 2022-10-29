@@ -1,9 +1,13 @@
 <template>
     <div>
-        <v-toolbar elevation=1 height="50">
-            <v-btn icon class="menu-btn">
+        <v-toolbar elevation=0 height="50" class="toolbar">
+            <v-btn
+                icon
+                @click="collapseSidebar"
+                class="menu-btn">
                 <v-icon>mdi-menu</v-icon>
             </v-btn>
+
             <v-toolbar-title>Jira</v-toolbar-title>
 
             <v-spacer/>
@@ -38,7 +42,7 @@
 </template>
 
 <script>
-    import TodoModal from "@/components/modal/TodoModal";
+    import TodoModal from "@/components/main/modal/TodoModal";
 
     export default {
         name: "MainToolbar",
@@ -52,16 +56,29 @@
                 snackbarTimeOut: 1500
             }
         },
+        computed: {
+            isCollapsed() {
+                return this.$store.getters["sidebar/isCollapsed"];
+            },
+        },
         methods: {
             showModal() {
                 this.show = !this.show
+            },
+            collapseSidebar() {
+                this.$store.dispatch('sidebar/setCollapsed', !this.isCollapsed)
             },
         }
     }
 </script>
 
 <style lang="scss">
-    .menu-btn:hover {
-        color: #1976d2 !important;
+    .toolbar {
+        border-bottom: 1px #DCDCDC solid !important;
+
+        .menu-btn:hover {
+            color: #1976d2 !important;
+        }
     }
+
 </style>

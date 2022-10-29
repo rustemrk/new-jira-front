@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="modal">
         <v-dialog
             v-model="show"
             persistent
@@ -15,7 +15,7 @@
                 <v-card-text>
                     <v-container>
                         <v-row>
-                            <v-col cols="5">
+                            <v-col cols="4">
                                 <v-select
                                     dense
                                     outlined
@@ -34,6 +34,7 @@
                                 <v-form ref="form">
                                     <v-text-field
                                         dense
+                                        autofocus
                                         outlined
                                         clearable
                                         clear-icon="mdi-close-circle-outline"
@@ -59,7 +60,7 @@
                 <v-card-actions>
                     <v-spacer/>
                     <v-btn
-                        text
+                        outlined
                         color="primary"
                         elevation="0"
                         @click="closeModal"
@@ -108,7 +109,7 @@
                 todo: {
                     title: null,
                     description: null,
-                    typeId: 0,
+                    typeId: 1,
                     statusId: 1
                 },
             }
@@ -124,7 +125,8 @@
                 }
             },
             typeErrors() {
-                if (!this.$v.todo.typeId.$dirty || !this.$v.todo.typeId.required && this.typeError.push('')) {
+                if (!this.$v.todo.typeId.$dirty ||
+                    !this.$v.todo.typeId.required && this.typeError.push('')) {
                     return this.typeError
                 } else {
                     this.typeError = []

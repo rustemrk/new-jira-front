@@ -1,15 +1,17 @@
 <template>
-    <div>
-        Sidebar
+    <div class="backlog">
+        BacklogFrame
     </div>
 </template>
 
 <script>
     export default {
-        name: "MainSidebar"
+        name: "BacklogFrame"
     }
 </script>
 
 <style lang="scss">
+    .backlog {
 
+    }
 </style>
