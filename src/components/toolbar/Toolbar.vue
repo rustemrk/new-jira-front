@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <header>
         <v-toolbar elevation=0 height="50" class="toolbar">
             <v-btn
                 icon
@@ -38,14 +38,14 @@
         >
             {{ snackbarText }}
         </v-snackbar>
-    </div>
+    </header>
 </template>
 
 <script>
     import TodoModal from "@/components/main/modal/TodoModal";
 
     export default {
-        name: "MainToolbar",
+        name: "Toolbar",
         components: {TodoModal},
 
         data() {

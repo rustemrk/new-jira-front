@@ -39,18 +39,5 @@
 </script>
 
 <style lang="scss">
-    * {
-        transition: 0.15s;
-    }
 
-    .sidebar {
-        height: calc(100vh - 50px);
-        width: 280px;
-        border-right: 1px #DCDCDC solid;
-        margin: 0;
-    }
-
-    .sidebar__collapsed {
-        width: 57px;
-    }
 </style>

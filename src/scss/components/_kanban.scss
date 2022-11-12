@@ -1,0 +1,10 @@
+.kanban {
+  display: flex;
+  flex-direction: row;
+  height: fit-content;
+  padding: 20px;
+  overflow-x: scroll;
+  background-color: steelblue; //
+  border-radius: 8px;
+}
+

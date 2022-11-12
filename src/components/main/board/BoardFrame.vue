@@ -1,17 +1,18 @@
 <template>
-    <div class="board">
-        BoardFrame
-    </div>
+    <main class="board">
+        <kanban/>
+    </main>
 </template>
 
 <script>
+    import Kanban from "@/components/main/board/kanban/Kanban";
+
     export default {
         name: "BoardFrame",
+        components: {Kanban},
     }
 </script>
 
 <style lang="scss">
-    .board {
 
-    }
 </style>

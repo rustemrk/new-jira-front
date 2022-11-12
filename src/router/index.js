@@ -17,7 +17,6 @@ const routes = [
             {path: '/board', name: 'board', component: BoardFrame},
             {path: '/backlog', name: 'backlog', component: BacklogFrame},
         ]
-
     },
     {
         path: '/profile',
