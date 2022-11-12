@@ -11,7 +11,5 @@
 </script>
 
 <style lang="scss">
-    .backlog {
 
-    }
 </style>
