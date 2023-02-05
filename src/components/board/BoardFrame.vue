@@ -5,11 +5,12 @@
 </template>
 
 <script>
-    import Kanban from "@/components/main/board/kanban/Kanban";
+    import Kanban from "@/components/board/kanban/Kanban";
+    import KanbanColumn from "@/components/board/kanban/KanbanColumn";
 
     export default {
         name: "BoardFrame",
-        components: {Kanban},
+        components: {KanbanColumn, Kanban},
     }
 </script>
 

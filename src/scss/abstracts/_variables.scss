@@ -1,7 +1,11 @@
 // app
 $app-max-width: 2048px;
 
+// views
+$view-height: calc(100vh - 50px);
+
 // sidebar
 $sidebar-width: 220px;
+$sidebar-height: $view-height;
 $sidebar-collapsed-width: 57px;
 

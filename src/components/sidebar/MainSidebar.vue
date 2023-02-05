@@ -1,7 +1,7 @@
 <template>
     <aside class="sidebar" :class="isCollapsed ? 'sidebar__collapsed' : ''">
         <v-list nav dense>
-            <!--            <v-subheader v-if="!isCollapsed">REPORTS</v-subheader>-->
+            <v-subheader v-if="!isCollapsed">ПЛАНИРОВАНИЕ</v-subheader>
             <v-list-item-group
                 class="sidebar-group"
                 color="primary"
@@ -19,7 +19,7 @@
 
 <script>
     import {mapGetters} from "vuex";
-    import MainSidebarItem from "@/components/main/sidebar/MainSidebarItem";
+    import MainSidebarItem from "@/components/sidebar/MainSidebarItem";
 
     export default {
         name: "MainSidebar",

@@ -2,10 +2,13 @@ import restHttpClient from "@/api/restHttpClient";
 
 const todoApi = {
     get: (id) => {
-        return restHttpClient.get('/todo/get/' + id);
+        return restHttpClient.get('/api/todo/' + id);
     },
-    save: (data) => {
-        return restHttpClient.put('/todo/save', data)
+    create: (data) => {
+        return restHttpClient.post('/api/todo', data)
+    },
+    update: (data) => {
+        return restHttpClient.put('/api/todo', data)
     }
 }
 

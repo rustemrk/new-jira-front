@@ -3,7 +3,7 @@
 .sidebar {
   width: $sidebar-width;
   transition: 0.15s;
-  height: calc(100vh - 50px);
+  height: $view-height;
   border-right: 1px #DCDCDC solid;
 }
 

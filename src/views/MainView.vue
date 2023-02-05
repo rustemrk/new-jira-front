@@ -6,12 +6,11 @@
 </template>
 
 <script>
-    import MainToolbar from "@/components/toolbar/Toolbar";
-    import MainSidebar from "@/components/main/sidebar/MainSidebar";
+    import MainSidebar from "@/components/sidebar/MainSidebar";
 
     export default {
         name: "MainView",
-        components: {MainSidebar, MainToolbar},
+        components: {MainSidebar},
         data() {
             return {}
         },

@@ -1,7 +1,9 @@
+@import "src/scss/abstracts/variables";
+
 .board {
-  overflow: hidden;
-  padding: 20px; // временное решение
+  padding: 20px 0 0 10px; // временное решение
   flex-grow: 1;
+  max-height: $view-height;
 
   @media screen and (max-width: 1599px) {
     width: 80%;

@@ -145,7 +145,7 @@
             },
             save() {
                 if (!this.hasErrors()) {
-                    todoApi.save(this.todo).then(() => {
+                    todoApi.create(this.todo).then(() => {
                         this.$emit("close");
                         this.$emit("snackbar");
                     })

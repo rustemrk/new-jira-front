@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import MainView from "@/views/MainView";
 import ProfileView from "@/views/ProfileView";
-import BoardFrame from "@/components/main/board/BoardFrame";
-import BacklogFrame from "@/components/main/backlog/BacklogFrame";
+import BoardFrame from "@/components/board/BoardFrame";
+import BacklogFrame from "@/components/backlog/BacklogFrame";
 import VueRouter from "vue-router";
 
 Vue.use(VueRouter)

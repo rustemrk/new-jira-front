@@ -42,7 +42,7 @@
 </template>
 
 <script>
-    import TodoModal from "@/components/main/modal/TodoModal";
+    import TodoModal from "@/components/modal/TodoModal";
 
     export default {
         name: "Toolbar",
