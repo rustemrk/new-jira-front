@@ -1,16 +1,16 @@
 <template>
     <div class="main-view">
-        <main-sidebar/>
+        <sidebar/>
         <router-view/>
     </div>
 </template>
 
 <script>
-    import MainSidebar from "@/components/sidebar/MainSidebar";
+    import Sidebar from "@/components/sidebar/Sidebar";
 
     export default {
         name: "MainView",
-        components: {MainSidebar},
+        components: {Sidebar},
         data() {
             return {}
         },

@@ -7,7 +7,7 @@
                 color="primary"
                 mandatory
             >
-                <main-sidebar-item
+                <sidebar-item
                     v-for="item in staticItems"
                     :key="item.id"
                     :item="item"
@@ -19,11 +19,11 @@
 
 <script>
     import {mapGetters} from "vuex";
-    import MainSidebarItem from "@/components/sidebar/MainSidebarItem";
+    import SidebarItem from "@/components/sidebar/SidebarItem";
 
     export default {
-        name: "MainSidebar",
-        components: {MainSidebarItem},
+        name: "Sidebar",
+        components: {SidebarItem},
         data() {
             return {
                 group: null,

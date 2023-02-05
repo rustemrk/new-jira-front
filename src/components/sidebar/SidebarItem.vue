@@ -11,7 +11,7 @@
     import router from "@/router";
 
     export default {
-        name: "MainSidebarItem",
+        name: "SidebarItem",
         props: {
             item: null
         },
