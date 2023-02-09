@@ -8,7 +8,10 @@
   padding: 20px 10px 10px; // todo подумать
   overflow-x: scroll;
   overflow-y: scroll;
-  background-color: lightskyblue;
   border-radius: 8px; // todo подумать
 
+}
+
+.kanban::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }

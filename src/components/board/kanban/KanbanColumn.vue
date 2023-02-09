@@ -1,22 +1,23 @@
 <template>
-    <v-col class="kanban-column" v-if="todo">
-        {{ title.toUpperCase() }}
-        <div class="col" v-if="status.id === todo.status.id">
-            <div>{{ todo.id }}</div>
-            <div>{{ todo.status.id }}</div>
-            <div>{{ todo.title }}</div>
-        </div>
-
+    <v-col class="kanban-column">
+        {{ status.name + ' ' + status.todos.length + ' задач' }}
+        <draggable>
+            <kanban-card v-for="todo in status.todos"
+                         :key="todo.id"
+                         :todo="todo"
+            />
+        </draggable>
     </v-col>
 </template>
 
 <script>
+    import KanbanCard from "@/components/board/kanban/KanbanCard";
+    import draggable from 'vuedraggable';
 
     export default {
         name: "KanbanColumn",
+        components: {KanbanCard, draggable},
         props: {
-            todo: null,
-            title: null,
             status: null
         }
     }
@@ -24,20 +25,11 @@
 
 <style lang="scss">
     .kanban-column {
-        min-width: 220px;
-        max-width: 220px;
+        min-width: 280px;
+        max-width: 280px;
         height: 100%;
-        background-color: lightgray;
+        background-color: ghostwhite;
         border-radius: 8px;
         padding: 5px;
-
-        .col {
-            border: whitesmoke 1px solid;
-            margin-bottom: 4px;
-            margin-top: 4px;
-            border-radius: 8px;
-            background-color: whitesmoke;
-            height: 100px;
-        }
     }
 </style>

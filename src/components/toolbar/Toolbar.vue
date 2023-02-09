@@ -12,6 +12,17 @@
 
             <v-spacer/>
 
+            <!--            todo подумать над стилем кнопки-->
+            <v-btn
+                @click="$vuetify.theme.dark = !$vuetify.theme.dark"
+                color="primary"
+                class="mr-3"
+                depressed
+            >
+                <v-icon>mdi-theme-light-dark</v-icon>
+            </v-btn>
+
+
             <v-btn
                 @click="showModal"
                 color="primary"

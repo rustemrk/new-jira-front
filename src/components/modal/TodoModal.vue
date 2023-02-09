@@ -17,18 +17,31 @@
                         <v-row>
                             <v-col cols="4">
                                 <v-select
+                                    class="todo-type-select"
                                     dense
                                     outlined
                                     label="Тип"
                                     name="name"
                                     item-text="name"
                                     item-value="id"
-                                    :items="items"
+                                    :items="todoTypeItems"
                                     v-model="todo.typeId"
                                     :error-messages="typeErrors"
                                     @input="$v.todo.typeId.$touch()"
                                     @blur="$v.todo.typeId.$touch()"
-                                />
+                                >
+                                    <template #item="{ item }">
+                                        <v-icon :color="item.color">{{ item.icon }}</v-icon>
+                                        <v-list-item>{{ item.name }}</v-list-item>
+                                    </template>
+
+                                    <template #selection="{ item }">
+                                        <div class="selection">
+                                            <v-icon :color="item.color">{{ item.icon }}</v-icon>
+                                            <v-list-item>{{ item.name }}</v-list-item>
+                                        </div>
+                                    </template>
+                                </v-select>
                             </v-col>
                             <v-col cols="12">
                                 <v-form ref="form">
@@ -85,6 +98,7 @@
     import todoApi from "@/api/todoApi";
     import {validationMixin} from 'vuelidate'
     import {required} from 'vuelidate/lib/validators'
+    import todoTypeApi from "@/api/todoTypeApi";
 
     export default {
         name: "TodoModal",
@@ -102,17 +116,16 @@
             return {
                 errors: [],
                 typeError: [],
-                items: [
-                    {id: 1, name: 'Задача'},
-                    {id: 2, name: 'Баг'}
-                ],
+                todoTypeItems: [],
                 todo: {
                     title: null,
                     description: null,
                     typeId: 1,
-                    statusId: 1
                 },
             }
+        },
+        created() {
+            this.getTodoTypes()
         },
         computed: {
             titleErrors() {
@@ -135,6 +148,11 @@
             }
         },
         methods: {
+            async getTodoTypes() {
+                await todoTypeApi.list().then(response => {
+                    this.todoTypeItems = response.data
+                })
+            },
             closeModal() {
                 this.$emit("close");
             },
@@ -146,6 +164,7 @@
             save() {
                 if (!this.hasErrors()) {
                     todoApi.create(this.todo).then(() => {
+                        this.$store.dispatch('event/todoCreated');
                         this.$emit("close");
                         this.$emit("snackbar");
                     })
@@ -157,4 +176,25 @@
 
 <style lang="scss">
 
+    .todo-type-select {
+        .v-select__selections {
+            height: 40px;
+            flex-wrap: nowrap;
+
+            .selection {
+                display: flex;
+                flex-direction: row;
+
+                .v-list-item {
+                    padding: 0 8px;
+                }
+            }
+        }
+    }
+
+    .v-menu__content {
+        .v-list-item {
+            padding: 0 8px;
+        }
+    }
 </style>
