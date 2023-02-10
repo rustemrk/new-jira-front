@@ -26,6 +26,8 @@
                                     item-value="id"
                                     :items="todoTypeItems"
                                     v-model="todo.typeId"
+                                    :loading="todoTypesLoading"
+                                    :disabled="todoTypesLoading"
                                     :error-messages="typeErrors"
                                     @input="$v.todo.typeId.$touch()"
                                     @blur="$v.todo.typeId.$touch()"
@@ -76,14 +78,15 @@
                         outlined
                         color="primary"
                         elevation="0"
+                        :disabled="isLoading"
                         @click="closeModal"
                     >
                         Отмена
                     </v-btn>
                     <v-btn
-                        dark
                         elevation="0"
                         color="primary"
+                        :disabled="isLoading"
                         @click="save"
                     >
                         Создать
@@ -117,6 +120,8 @@
                 errors: [],
                 typeError: [],
                 todoTypeItems: [],
+                isLoading: false,
+                todoTypesLoading: false,
                 todo: {
                     title: null,
                     description: null,
@@ -149,8 +154,11 @@
         },
         methods: {
             async getTodoTypes() {
+                this.todoTypesLoading = true;
                 await todoTypeApi.list().then(response => {
                     this.todoTypeItems = response.data
+                }).finally(() => {
+                    this.todoTypesLoading = false;
                 })
             },
             closeModal() {
@@ -163,10 +171,13 @@
             },
             save() {
                 if (!this.hasErrors()) {
+                    this.isLoading = true;
                     todoApi.create(this.todo).then(() => {
                         this.$store.dispatch('event/todoCreated');
                         this.$emit("close");
                         this.$emit("snackbar");
+                    }).finally(() => {
+                        this.isLoading = false;
                     })
                 }
             },

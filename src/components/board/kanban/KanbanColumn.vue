@@ -1,6 +1,6 @@
 <template>
     <v-col class="kanban-column">
-        {{ status.name + ' ' + status.todos.length + ' задач' }}
+        {{ status.name.toUpperCase() + ' ' + status.todos.length + ' задач' }}
         <draggable>
             <kanban-card v-for="todo in status.todos"
                          :key="todo.id"

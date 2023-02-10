@@ -5,8 +5,11 @@
 </template>
 
 <script>
+    import Frame from "@/Frame";
+
     export default {
-        name: "BacklogFrame"
+        name: "BacklogFrame",
+        extends: Frame,
     }
 </script>
 

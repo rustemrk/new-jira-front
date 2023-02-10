@@ -4,8 +4,8 @@ const todoStatusApi = {
     get: (id) => {
         return restHttpClient.get('/api/todo-status/' + id);
     },
-    list: () => {
-        return restHttpClient.get('/api/todo-status')
+    getAllWithTodos: () => {
+        return restHttpClient.get('/api/todo-status/with-todos')
     },
 }
 
