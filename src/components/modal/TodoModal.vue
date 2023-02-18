@@ -1,7 +1,8 @@
 <template>
-    <div class="modal">
+    <div>
         <v-dialog
             v-model="show"
+            content-class="todo-modal"
             persistent
             max-width="800px"
         >
@@ -24,10 +25,10 @@
                                     name="name"
                                     item-text="name"
                                     item-value="id"
-                                    :items="todoTypeItems"
+                                    :items="todoTypes"
                                     v-model="todo.typeId"
-                                    :loading="todoTypesLoading"
-                                    :disabled="todoTypesLoading"
+                                    :loading="loading"
+                                    :disabled="loading"
                                     :error-messages="typeErrors"
                                     @input="$v.todo.typeId.$touch()"
                                     @blur="$v.todo.typeId.$touch()"
@@ -44,6 +45,21 @@
                                         </div>
                                     </template>
                                 </v-select>
+                            </v-col>
+                            <v-col cols="4">
+                                <v-select
+                                    class="todo-type-select"
+                                    dense
+                                    outlined
+                                    label="Статус"
+                                    name="name"
+                                    item-text="name"
+                                    item-value="id"
+                                    :items="statuses"
+                                    v-model="todo.statusId"
+                                    :loading="loading"
+                                    :disabled="loading"
+                                />
                             </v-col>
                             <v-col cols="12">
                                 <v-form ref="form">
@@ -78,7 +94,7 @@
                         outlined
                         color="primary"
                         elevation="0"
-                        :disabled="isLoading"
+                        :disabled="loading"
                         @click="closeModal"
                     >
                         Отмена
@@ -86,7 +102,7 @@
                     <v-btn
                         elevation="0"
                         color="primary"
-                        :disabled="isLoading"
+                        :disabled="loading"
                         @click="save"
                     >
                         Создать
@@ -102,6 +118,7 @@
     import {validationMixin} from 'vuelidate'
     import {required} from 'vuelidate/lib/validators'
     import todoTypeApi from "@/api/todoTypeApi";
+    import todoStatusApi from "@/api/todoStatusApi";
 
     export default {
         name: "TodoModal",
@@ -119,18 +136,19 @@
             return {
                 errors: [],
                 typeError: [],
-                todoTypeItems: [],
-                isLoading: false,
-                todoTypesLoading: false,
+                todoTypes: [],
+                statuses: [],
+                loading: false,
                 todo: {
                     title: null,
                     description: null,
                     typeId: 1,
+                    statusId: 1,
                 },
             }
         },
-        created() {
-            this.getTodoTypes()
+        async created() {
+            await this.loadData()
         },
         computed: {
             titleErrors() {
@@ -153,12 +171,20 @@
             }
         },
         methods: {
+            async loadData() {
+                this.loading = true;
+                await this.getTodoTypes();
+                await this.getStatuses();
+                this.loading = false;
+            },
             async getTodoTypes() {
-                this.todoTypesLoading = true;
                 await todoTypeApi.list().then(response => {
-                    this.todoTypeItems = response.data
-                }).finally(() => {
-                    this.todoTypesLoading = false;
+                    this.todoTypes = response.data
+                })
+            },
+            async getStatuses() {
+                await todoStatusApi.getAll().then(response => {
+                    this.statuses = response.data
                 })
             },
             closeModal() {
@@ -171,13 +197,13 @@
             },
             save() {
                 if (!this.hasErrors()) {
-                    this.isLoading = true;
+                    this.loading = true;
                     todoApi.create(this.todo).then(() => {
                         this.$store.dispatch('event/todoCreated');
                         this.$emit("close");
                         this.$emit("snackbar");
                     }).finally(() => {
-                        this.isLoading = false;
+                        this.loading = false;
                     })
                 }
             },
@@ -186,26 +212,32 @@
 </script>
 
 <style lang="scss">
+    .todo-modal {
+        .row {
+            display: flex;
+            flex-direction: column;
 
-    .todo-type-select {
-        .v-select__selections {
-            height: 40px;
-            flex-wrap: nowrap;
+            .todo-type-select {
+                .v-select__selections {
+                    height: 40px;
+                    flex-wrap: nowrap;
 
-            .selection {
-                display: flex;
-                flex-direction: row;
+                    .selection {
+                        display: flex;
+                        flex-direction: row;
 
+                        .v-list-item {
+                            padding: 0 8px;
+                        }
+                    }
+                }
+            }
+
+            .v-menu__content {
                 .v-list-item {
                     padding: 0 8px;
                 }
             }
-        }
-    }
-
-    .v-menu__content {
-        .v-list-item {
-            padding: 0 8px;
         }
     }
 </style>

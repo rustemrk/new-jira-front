@@ -3,7 +3,7 @@
         <toolbar/>
         <vue-topprogress
             ref="topProgress"
-            :speed="200"/>
+            :speed="350"/>
         <router-view/>
     </v-app>
 </template>
