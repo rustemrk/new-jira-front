@@ -2,13 +2,13 @@ import restHttpClient from "@/api/restHttpClient";
 
 const todoStatusApi = {
     get: (id) => {
-        return restHttpClient.get('/api/todo-status/' + id);
+        return restHttpClient.get('/api/v1/todo-status/' + id);
     },
     getAll: () => {
-        return restHttpClient.get('/api/todo-status')
+        return restHttpClient.get('/api/v1/todo-status')
     },
     getAllWithTodos: () => {
-        return restHttpClient.get('/api/todo-status/with-todos')
+        return restHttpClient.get('/api/v1/todo-status/with-todos')
     },
 }
 

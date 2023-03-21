@@ -2,7 +2,7 @@ import restHttpClient from "@/api/restHttpClient";
 
 const todoTypeApi = {
     list: () => {
-        return restHttpClient.get('/api/todo-type')
+        return restHttpClient.get('/api/v1/todo-type')
     },
 }
 
