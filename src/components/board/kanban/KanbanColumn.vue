@@ -1,7 +1,10 @@
 <template>
     <v-col class="kanban-column">
         {{ status.name.toUpperCase() + ' ' + status.todos.length + ' задач' }}
-        <draggable>
+        <draggable
+            group="todos"
+            ghost-class="ghost-card"
+            :animation="200">
             <kanban-card v-for="todo in status.todos"
                          :key="todo.id"
                          :todo="todo"
@@ -31,5 +34,9 @@
         background-color: ghostwhite;
         border-radius: 8px;
         padding: 5px;
+
+        .ghost-card {
+            opacity: 0;
+        }
     }
 </style>
