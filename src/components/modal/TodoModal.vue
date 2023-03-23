@@ -147,8 +147,8 @@
                 },
             }
         },
-        async created() {
-            await this.loadData()
+        created() {
+            this.loadData()
         },
         computed: {
             titleErrors() {
@@ -171,10 +171,10 @@
             }
         },
         methods: {
-            async loadData() {
+            loadData() {
                 this.loading = true;
-                await this.getTodoTypes();
-                await this.getStatuses();
+                this.getTodoTypes();
+                this.getStatuses();
                 this.loading = false;
             },
             async getTodoTypes() {
