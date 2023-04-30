@@ -8,8 +8,8 @@
         <v-card-actions>
             <v-list-item class="grow">
                 <v-row align="center" justify="end">
-                    <v-icon :color="todo.type.color">
-                        {{ todo.type.icon }}
+                    <v-icon :color="todo.typeColor">
+                        {{ todo.typeIcon }}
                     </v-icon>
                 </v-row>
             </v-list-item>

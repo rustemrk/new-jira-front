@@ -171,10 +171,10 @@
             }
         },
         methods: {
-            loadData() {
+            async loadData() {
                 this.loading = true;
-                this.getTodoTypes();
-                this.getStatuses();
+                await this.getTodoTypes();
+                await this.getStatuses();
                 this.loading = false;
             },
             async getTodoTypes() {
