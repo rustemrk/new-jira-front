@@ -35,11 +35,12 @@
             v-if="show"
             :show="show"
             @close="show = !show"
-            @snackbar="snackbar = !snackbar"
+            @snackbar="showSnackbar"
         />
         <v-snackbar
+            v-if="snackbar"
             v-model="snackbar"
-            :timeout="snackbarTimeOut"
+            :timeout="2000"
             right
             bottom
             absolute
@@ -54,17 +55,17 @@
 
 <script>
     import TodoModal from "@/components/modal/TodoModal";
+    import {snackbarMixin} from "@/mixins/snackbarMixin";
 
     export default {
         name: "Toolbar",
         components: {TodoModal},
-
+        mixins: [snackbarMixin],
         data() {
             return {
                 show: false,
                 snackbar: false,
-                snackbarText: 'Задача добавлена',
-                snackbarTimeOut: 1500
+                snackbarText: null,
             }
         },
         computed: {
@@ -78,7 +79,7 @@
             },
             collapseSidebar() {
                 this.$store.dispatch('sidebar/setCollapsed', !this.isCollapsed)
-            },
+            }
         }
     }
 </script>

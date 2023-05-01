@@ -9,7 +9,7 @@
             <v-card>
                 <v-card-title>
                     <v-col cols="6">
-                        <span class="text-h6">Создание задачи</span>
+                        <span class="text-h6">{{ modalTitle }}</span>
                     </v-col>
                 </v-card-title>
 
@@ -65,7 +65,7 @@
                                 <v-form ref="form">
                                     <v-text-field
                                         dense
-                                        autofocus
+                                        :autofocus="isCreate"
                                         outlined
                                         clearable
                                         clear-icon="mdi-close-circle-outline"
@@ -94,7 +94,6 @@
                         outlined
                         color="primary"
                         elevation="0"
-                        :disabled="loading"
                         @click="closeModal"
                     >
                         Отмена
@@ -105,7 +104,7 @@
                         :disabled="loading"
                         @click="save"
                     >
-                        Создать
+                        {{ okTitle }}
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -124,6 +123,7 @@
         name: "TodoModal",
         props: {
             show: {type: Boolean, default: false},
+            todoId: {type: Number, default: null}
         },
         mixins: [validationMixin],
         validations: {
@@ -149,6 +149,10 @@
         },
         created() {
             this.loadData()
+            if (!this.isCreate) {
+                this.getTodo(this.todoId);
+            }
+
         },
         computed: {
             titleErrors() {
@@ -168,13 +172,22 @@
                     this.typeError = []
                     return this.typeError
                 }
-            }
+            },
+            isCreate() {
+                return !this.todoId;
+            },
+            modalTitle() {
+                return this.isCreate ? "Создание задачи" : "Редактирование задачи";
+            },
+            okTitle() {
+                return this.isCreate ? 'Создать' : 'Редактировать';
+            },
         },
         methods: {
             async loadData() {
                 this.loading = true;
                 await this.getTodoTypes();
-                await this.getStatuses();
+                await this.getTodoStatuses();
                 this.loading = false;
             },
             async getTodoTypes() {
@@ -182,13 +195,21 @@
                     this.todoTypes = response.data
                 })
             },
-            async getStatuses() {
+            async getTodoStatuses() {
                 await todoStatusApi.getAll().then(response => {
                     this.statuses = response.data
                 })
             },
+            async getTodo(id) {
+                await todoApi.get(id).then(response => {
+                    this.todo = response.data
+                });
+            },
             closeModal() {
                 this.$emit("close");
+            },
+            showSnackbar(text) {
+                this.$emit("snackbar", text);
             },
             hasErrors() {
                 if (!this.todo.title) this.errors.push('')
@@ -198,13 +219,23 @@
             save() {
                 if (!this.hasErrors()) {
                     this.loading = true;
-                    todoApi.create(this.todo).then(() => {
-                        this.$store.dispatch('event/todoCreated');
-                        this.$emit("close");
-                        this.$emit("snackbar");
-                    }).finally(() => {
-                        this.loading = false;
-                    })
+                    if (this.isCreate) {
+                        todoApi.create(this.todo).then(() => {
+                            this.$store.dispatch('event/todoCreated');
+                            this.closeModal()
+                            this.showSnackbar('Задача создана')
+                        }).finally(() => {
+                            this.loading = false;
+                        })
+                    } else {
+                        todoApi.update(this.todo).then(() => {
+                            this.$store.dispatch('event/todoUpdated');
+                            this.closeModal()
+                            this.showSnackbar('Задача отредактирована')
+                        }).finally(() => {
+                            this.loading = false;
+                        })
+                    }
                 }
             },
         }

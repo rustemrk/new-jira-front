@@ -25,11 +25,17 @@
         watch: {
             todoCreated() {
                 this.getStatuses()
+            },
+            todoUpdated() {
+                this.getStatuses()
             }
         },
         computed: {
             todoCreated() {
                 return this.$store.getters["event/todoCreated"];
+            },
+            todoUpdated() {
+                return this.$store.getters["event/todoUpdated"];
             },
         },
         methods: {
