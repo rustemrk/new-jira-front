@@ -6,13 +6,12 @@
 
 <script>
     import Kanban from "@/components/board/kanban/Kanban";
-    import KanbanColumn from "@/components/board/kanban/KanbanColumn";
     import Frame from "@/Frame";
     import todoStatusApi from "@/api/todoStatusApi";
 
     export default {
         name: "BoardFrame",
-        components: {KanbanColumn, Kanban},
+        components: {Kanban},
         extends: Frame,
         data() {
             return {

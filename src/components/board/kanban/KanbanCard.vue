@@ -43,6 +43,7 @@
 <script>
     import TodoModal from "@/components/modal/TodoModal";
     import {snackbarMixin} from "@/mixins/snackbarMixin";
+    import {UtModal} from "@/utils/UtModal";
 
     export default {
         name: "KanbanCard",
@@ -60,7 +61,12 @@
         },
         methods: {
             showModal() {
-                this.show = !this.show
+                UtModal.showModal(TodoModal, {
+                    propsData: {
+                        todoId: this.todo.id,
+                        show: true
+                    }
+                });
             }
         }
     }

@@ -10,6 +10,7 @@
 
 <script>
     import KanbanColumn from "@/components/board/kanban/KanbanColumn";
+    import todoApi from "@/api/todoApi";
 
     export default {
         name: "Kanban",
@@ -18,6 +19,39 @@
         },
         props: {
             statuses: null
+        },
+        watch: {
+            statuses: {
+                handler(newValue) {
+                    this.actualizeKanbanOrder(newValue);
+
+                    let finalResult = [];
+                    newValue.map(status => status.todos)
+                        .map(todos => todos.map(todo => {
+                            return {
+                                todoId: todo.id,
+                                statusId: todo.statusId,
+                                kanbanOrder: todo.kanbanOrder
+                            }
+                        })).forEach(el => {
+                        el.forEach(todo => {
+                            finalResult.push(todo)
+                        })
+                    })
+
+                    todoApi.saveKanbanOrder(finalResult);
+                },
+                deep: true
+            }
+        },
+        methods: {
+            actualizeKanbanOrder(statuses) {
+                statuses.map(status => {
+                    status.todos.forEach((todo, key) => {
+                        todo.kanbanOrder = key
+                    })
+                })
+            },
         }
     }
 </script>

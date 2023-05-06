@@ -1,115 +1,114 @@
 <template>
-    <div>
-        <v-dialog
-            v-model="show"
-            content-class="todo-modal"
-            persistent
-            max-width="800px"
-        >
-            <v-card>
-                <v-card-title>
-                    <v-col cols="6">
-                        <span class="text-h6">{{ modalTitle }}</span>
-                    </v-col>
-                </v-card-title>
+    <v-dialog
+        :value="show"
+        content-class="todo-modal"
+        persistent
+        max-width="800px"
+    >
+        <v-card>
+            <v-card-title>
+                <v-col cols="6">
+                    <span class="text-h6">{{ modalTitle }}</span>
+                </v-col>
+            </v-card-title>
 
-                <v-card-text>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="4">
-                                <v-select
-                                    class="todo-type-select"
-                                    dense
-                                    outlined
-                                    label="Тип"
-                                    name="name"
-                                    item-text="name"
-                                    item-value="id"
-                                    :items="todoTypes"
-                                    v-model="todo.typeId"
-                                    :loading="loading"
-                                    :disabled="loading"
-                                    :error-messages="typeErrors"
-                                    @input="$v.todo.typeId.$touch()"
-                                    @blur="$v.todo.typeId.$touch()"
-                                >
-                                    <template #item="{ item }">
+            <v-card-text>
+                <v-container>
+                    <v-row>
+                        <v-col cols="4">
+                            <v-select
+                                class="todo-type-select"
+                                dense
+                                outlined
+                                label="Тип"
+                                name="name"
+                                item-text="name"
+                                item-value="id"
+                                :items="todoTypes"
+                                v-model="todo.typeId"
+                                :loading="loading"
+                                :disabled="loading"
+                                :error-messages="typeErrors"
+                                @input="$v.todo.typeId.$touch()"
+                                @blur="$v.todo.typeId.$touch()"
+                            >
+                                <template #item="{ item }">
+                                    <v-icon :color="item.color">{{ item.icon }}</v-icon>
+                                    <v-list-item>{{ item.name }}</v-list-item>
+                                </template>
+
+                                <template #selection="{ item }">
+                                    <div class="selection">
                                         <v-icon :color="item.color">{{ item.icon }}</v-icon>
                                         <v-list-item>{{ item.name }}</v-list-item>
-                                    </template>
-
-                                    <template #selection="{ item }">
-                                        <div class="selection">
-                                            <v-icon :color="item.color">{{ item.icon }}</v-icon>
-                                            <v-list-item>{{ item.name }}</v-list-item>
-                                        </div>
-                                    </template>
-                                </v-select>
-                            </v-col>
-                            <v-col cols="4">
-                                <v-select
-                                    class="todo-type-select"
+                                    </div>
+                                </template>
+                            </v-select>
+                        </v-col>
+                        <v-col cols="4">
+                            <v-select
+                                class="todo-type-select"
+                                dense
+                                outlined
+                                label="Статус"
+                                name="name"
+                                item-text="name"
+                                item-value="id"
+                                :items="statuses"
+                                v-model="todo.statusId"
+                                :loading="loading"
+                                :disabled="loading"
+                            />
+                        </v-col>
+                        <v-col cols="12">
+                            <v-form ref="form">
+                                <v-text-field
                                     dense
+                                    :autofocus="isCreate"
                                     outlined
-                                    label="Статус"
-                                    name="name"
-                                    item-text="name"
-                                    item-value="id"
-                                    :items="statuses"
-                                    v-model="todo.statusId"
-                                    :loading="loading"
-                                    :disabled="loading"
+                                    clearable
+                                    clear-icon="mdi-close-circle-outline"
+                                    label="Заголовок"
+                                    error-messages="заполните поле"
+                                    v-model.trim="todo.title"
+                                    :error-messages="titleErrors"
+                                    @input="$v.todo.title.$touch()"
+                                    @blur="$v.todo.title.$touch()"
                                 />
-                            </v-col>
-                            <v-col cols="12">
-                                <v-form ref="form">
-                                    <v-text-field
-                                        dense
-                                        :autofocus="isCreate"
-                                        outlined
-                                        clearable
-                                        clear-icon="mdi-close-circle-outline"
-                                        label="Заголовок"
-                                        v-model.trim="todo.title"
-                                        :error-messages="titleErrors"
-                                        @input="$v.todo.title.$touch()"
-                                        @blur="$v.todo.title.$touch()"
-                                    />
-                                </v-form>
-                            </v-col>
+                            </v-form>
+                        </v-col>
 
-                            <v-col cols="12">
-                                <v-textarea
-                                    outlined
-                                    v-model="todo.description"
-                                    label="Описание"
-                                />
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer/>
-                    <v-btn
-                        outlined
-                        color="primary"
-                        elevation="0"
-                        @click="closeModal"
-                    >
-                        Отмена
-                    </v-btn>
-                    <v-btn
-                        elevation="0"
-                        color="primary"
-                        :disabled="loading"
-                        @click="save"
-                    >
-                        {{ okTitle }}
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </div>
+                        <v-col cols="12">
+                            <v-textarea
+                                outlined
+                                v-model="todo.description"
+                                label="Описание"
+                            />
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer/>
+                <v-btn
+                    outlined
+                    color="primary"
+                    elevation="0"
+                    @click="closeModal"
+                >
+                    Отмена
+                </v-btn>
+                <v-btn
+                    elevation="0"
+                    color="primary"
+                    :disabled="loading"
+                    @click="save"
+                >
+                    {{ okTitle }}
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script>
@@ -144,6 +143,7 @@
                     description: null,
                     typeId: 1,
                     statusId: 1,
+                    kanbanOrder: 0
                 },
             }
         },

@@ -22,7 +22,6 @@
                 <v-icon>mdi-theme-light-dark</v-icon>
             </v-btn>
 
-
             <v-btn
                 @click="showModal"
                 color="primary"
@@ -31,12 +30,6 @@
                 <v-icon>mdi-plus</v-icon>
             </v-btn>
         </v-toolbar>
-        <todo-modal
-            v-if="show"
-            :show="show"
-            @close="show = !show"
-            @snackbar="showSnackbar"
-        />
         <v-snackbar
             v-if="snackbar"
             v-model="snackbar"
@@ -56,6 +49,7 @@
 <script>
     import TodoModal from "@/components/modal/TodoModal";
     import {snackbarMixin} from "@/mixins/snackbarMixin";
+    import {UtModal} from "@/utils/UtModal";
 
     export default {
         name: "Toolbar",
@@ -75,7 +69,11 @@
         },
         methods: {
             showModal() {
-                this.show = !this.show
+                UtModal.showModal(TodoModal, {
+                    propsData: {
+                        show: true
+                    }
+                });
             },
             collapseSidebar() {
                 this.$store.dispatch('sidebar/setCollapsed', !this.isCollapsed)
