@@ -19,14 +19,14 @@
             }
         },
         created() {
-            this.getStatuses()
+            this.fetchData()
         },
         watch: {
             todoCreated() {
-                this.getStatuses()
+                this.fetchData()
             },
             todoUpdated() {
-                this.getStatuses()
+                this.fetchData()
             }
         },
         computed: {
@@ -38,7 +38,7 @@
             },
         },
         methods: {
-            async getStatuses() {
+            async fetchData() {
                 this.setAppBusy(true);
                 await todoStatusApi.getAllWithTodos().then(response => {
                     this.statuses = response.data

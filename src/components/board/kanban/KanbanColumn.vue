@@ -6,11 +6,11 @@
             group="todos"
             class="draggable-area"
             ghost-class="ghost-card"
-            :move="move"
-            @remove="onRemove($event, status)"
-            @add="onAdd($event, status)"
-            @end="onEnd"
-            @start="onStart"
+            :move="onMove"
+            @remove="onItemRemove($event, status)"
+            @add="onItemAdd($event, status)"
+            @end="onDragEnd"
+            @start="onDragStart"
             :animation="200">
             <kanban-card v-for="todo in status.todos"
                          :key="todo.id"
@@ -31,15 +31,16 @@
             status: null
         },
         methods: {
-            move(event) {
+            onMove(event) {
             },
-            onEnd(event) {
+            onDragEnd() {
+                this.$emit('dragEnd')
             },
-            onStart(event) {
+            onDragStart(event) {
             },
-            onRemove(event, status) {
+            onItemRemove(event, status) {
             },
-            onAdd(event, status) {
+            onItemAdd(event, status) {
                 status.todos
                     .filter(todo => todo.statusId !== status.id)
                     .map(todo => todo.statusId = status.id)

@@ -4,6 +4,7 @@
             v-for="status in statuses"
             :key="status.id"
             :status="status"
+            @dragEnd="saveKanbanOrder"
         />
     </div>
 </template>
@@ -20,31 +21,13 @@
         props: {
             statuses: null
         },
-        watch: {
-            statuses: {
-                handler(newValue) {
-                    this.actualizeKanbanOrder(newValue);
-
-                    let finalResult = [];
-                    newValue.map(status => status.todos)
-                        .map(todos => todos.map(todo => {
-                            return {
-                                todoId: todo.id,
-                                statusId: todo.statusId,
-                                kanbanOrder: todo.kanbanOrder
-                            }
-                        })).forEach(el => {
-                        el.forEach(todo => {
-                            finalResult.push(todo)
-                        })
-                    })
-
-                    todoApi.saveKanbanOrder(finalResult);
-                },
-                deep: true
-            }
-        },
         methods: {
+            async saveKanbanOrder() {
+                let result = [];
+                await this.actualizeKanbanOrder(this.statuses);
+                await this.getPreparedTodos(this.statuses, result);
+                todoApi.saveKanbanOrder(result);
+            },
             actualizeKanbanOrder(statuses) {
                 statuses.map(status => {
                     status.todos.forEach((todo, key) => {
@@ -52,6 +35,20 @@
                     })
                 })
             },
+            getPreparedTodos(statuses, result) {
+                statuses.map(status => status.todos)
+                    .map(todos => todos.map(todo => {
+                        return {
+                            todoId: todo.id,
+                            statusId: todo.statusId,
+                            kanbanOrder: todo.kanbanOrder
+                        }
+                    })).forEach(el => {
+                    el.forEach(todo => {
+                        result.push(todo)
+                    })
+                })
+            }
         }
     }
 </script>
