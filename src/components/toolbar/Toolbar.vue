@@ -84,7 +84,9 @@
 
 <style lang="scss">
     .toolbar {
-        border-bottom: 1px #DCDCDC solid !important;
+        border-bottom: 1px var(--v-borderLine-base) solid !important;
+        background-color: var(--v-backgroundGlobal-base) !important;
+        //transition: background-color .1s !important;
 
         .menu-btn:hover {
             color: #1976d2 !important;

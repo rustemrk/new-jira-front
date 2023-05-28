@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="kanban-card">
         <v-card
             @click.native="showModal"
-            class="mt-2 card"
+            class="card"
             elevation="1">
             <v-card-text>
                 {{ todo.title }}
@@ -73,12 +73,21 @@
 </script>
 
 <style lang="scss">
-    .card {
-        transform: translate(0, 0);
+    .kanban-card {
+        border-radius: 6px;
+
+        .card {
+            transform: translate(0, 0);
+            border-radius: 6px;
+            //transition: 0s, background-color .1s;
+            //transition: background-color 140ms ease-in-out 0s, color 140ms ease-in-out 0s;
+        }
+
+        .card:hover {
+            background-color: var(--v-kanbanCardHover-base);
+            cursor: pointer;
+        }
     }
 
-    .card:hover {
-        background-color: whitesmoke;
-        cursor: pointer;
-    }
+
 </style>

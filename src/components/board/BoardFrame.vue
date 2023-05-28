@@ -51,5 +51,30 @@
 </script>
 
 <style lang="scss">
+    @import "src/scss/abstracts/variables";
 
+    .board {
+        padding: 20px 16px 20px 10px !important; // временное решение
+        flex-grow: 1;
+        max-height: calc(100vh - 40px);
+        width: 100%;
+
+        @media screen and (max-width: 1599px) {
+            width: 80%;
+        }
+
+        // todo нужно оптимизировать под разные разрешения
+        //@media screen and (min-width: 4001px) {
+        //  width: 87%;
+        //}
+        //
+        //@media screen and (min-width: 2501px) and (max-width: 4000px) {
+        //  width: 88.5%;
+        //}
+        //
+        //@media screen and (min-width: 1600px) and (max-width: 2500px) {
+        //  width: 88%;
+        //}
+
+    }
 </style>

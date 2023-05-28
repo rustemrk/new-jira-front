@@ -18,5 +18,8 @@
 </script>
 
 <style lang="scss">
-
+    .main-view {
+        background-color: var(--v-backgroundGlobal-base);
+        //transition: background-color .1s;
+    }
 </style>

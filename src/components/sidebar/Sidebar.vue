@@ -1,6 +1,6 @@
 <template>
     <aside class="sidebar" :class="isCollapsed ? 'sidebar__collapsed' : ''">
-        <v-list nav dense>
+        <v-list class="sidebar-list" nav dense>
             <v-subheader v-if="!isCollapsed">ПЛАНИРОВАНИЕ</v-subheader>
             <v-list-item-group
                 class="sidebar-group"
@@ -39,5 +39,21 @@
 </script>
 
 <style lang="scss">
+    @import "src/scss/abstracts/variables";
 
+    .sidebar {
+        width: $sidebar-width;
+        height: $view-height;
+        border-right: 1px var(--v-borderLine-base) solid;
+        background-color: var(--v-backgroundGlobal-base);
+        transition: 0.15s;
+
+        .sidebar-list {
+            background-color: inherit;
+        }
+    }
+
+    .sidebar__collapsed {
+        width: $sidebar-collapsed-width;
+    }
 </style>

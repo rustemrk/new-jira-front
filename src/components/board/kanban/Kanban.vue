@@ -1,11 +1,13 @@
 <template>
-    <div class="kanban">
-        <kanban-column
-            v-for="status in statuses"
-            :key="status.id"
-            :status="status"
-            @dragEnd="saveKanbanOrder"
-        />
+    <div class="kanban-wrapper">
+        <div class="kanban">
+            <kanban-column
+                v-for="status in statuses"
+                :key="status.id"
+                :status="status"
+                @dragEnd="saveKanbanOrder"
+            />
+        </div>
     </div>
 </template>
 
@@ -54,22 +56,22 @@
 </script>
 
 <style lang="scss">
-    .kanban {
-        display: grid;
-        grid-auto-flow: column;
-        gap: 10px;
-
-        max-width: fit-content;
+    .kanban-wrapper {
+        width: 100%;
+        overflow: auto;
         height: 100%;
-        padding: 20px 10px 10px; // todo подумать
-        overflow-x: scroll;
-        overflow-y: scroll;
-        border-radius: 8px; // todo подумать
 
+        .kanban {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            gap: 10px;
+            border-radius: 5px;
+        }
     }
 
-    .kanban::-webkit-scrollbar {
-        display: none; /* Safari and Chrome */
-    }
 
+    //.ms::-webkit-scrollbar {
+    //    display: none; /* Safari and Chrome */
+    //}
 </style>

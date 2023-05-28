@@ -1,23 +1,27 @@
 <template>
-    <v-col class="kanban-column">
-        {{ status.name.toUpperCase() + ' ' + status.todos.length + ' задач' }}
-        <draggable
-            :list="status.todos"
-            group="todos"
-            class="draggable-area"
-            ghost-class="ghost-card"
-            :move="onMove"
-            @remove="onItemRemove($event, status)"
-            @add="onItemAdd($event, status)"
-            @end="onDragEnd"
-            @start="onDragStart"
-            :animation="200">
-            <kanban-card v-for="todo in status.todos"
-                         :key="todo.id"
-                         :todo="todo"
-            />
-        </draggable>
-    </v-col>
+    <div class="kanban-column">
+        <div class="column-header">
+            {{ status.name.toUpperCase() + ' ' + status.todos.length + ' задач' }}
+        </div>
+        <div class="column-list">
+            <draggable
+                :list="status.todos"
+                group="todos"
+                class="draggable-area"
+                ghost-class="ghost-card"
+                :move="onMove"
+                @remove="onItemRemove($event, status)"
+                @add="onItemAdd($event, status)"
+                @end="onDragEnd"
+                @start="onDragStart"
+                :animation="200">
+                <kanban-card v-for="todo in status.todos"
+                             :key="todo.id"
+                             :todo="todo"
+                />
+            </draggable>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -51,19 +55,40 @@
 
 <style lang="scss">
     .kanban-column {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        gap: 5px;
         min-width: 280px;
         max-width: 280px;
-        height: 100%;
-        background-color: ghostwhite;
+        background-color: var(--v-kanbanColumnBG-base);
         border-radius: 8px;
-        padding: 5px;
 
-        .ghost-card {
-            opacity: 0;
+        .column-header {
+            padding: 5px;
+            position: sticky;
+            z-index: 2;
+            background-color: var(--v-kanbanColumnBG-base);
+            top: 0;
+            border-radius: 8px 8px 0 0;
+            border-bottom: lightgrey 1px solid;
         }
 
-        .draggable-area {
-            height: calc(100% - 25px);
+        .column-list {
+            padding: 5px;
+            height: 100%;
+
+            .ghost-card {
+                opacity: 0;
+            }
+
+            .draggable-area {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                height: 100%;
+            }
         }
     }
+
 </style>
