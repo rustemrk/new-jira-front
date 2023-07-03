@@ -1,5 +1,6 @@
 <template>
     <main class="board">
+        <kanban-filter :filter="filter"/>
         <kanban v-if="statuses" :statuses="statuses"/>
     </main>
 </template>
@@ -7,19 +8,26 @@
 <script>
     import Kanban from "@/components/board/kanban/Kanban";
     import Frame from "@/Frame";
-    import todoStatusApi from "@/api/todoStatusApi";
+    import KanbanFilter from "@/components/board/kanban/KanbanFilter";
+    import boardApi from "@/api/boardApi";
 
     export default {
         name: "BoardFrame",
-        components: {Kanban},
+        components: {KanbanFilter, Kanban},
         extends: Frame,
         data() {
             return {
-                statuses: null
+                statuses: null,
+                filter: null,
             }
         },
         created() {
+            this.getDefaultFilter();
             this.fetchData()
+            this.unwatchFilter = this.$watch('filter', this.onFilterChanged, {deep: true});
+        },
+        destroyed() {
+            this.unwatchFilter();
         },
         watch: {
             todoCreated() {
@@ -27,7 +35,7 @@
             },
             todoUpdated() {
                 this.fetchData()
-            }
+            },
         },
         computed: {
             todoCreated() {
@@ -38,14 +46,31 @@
             },
         },
         methods: {
-            async fetchData() {
+            fetchData() {
                 this.setAppBusy(true);
-                await todoStatusApi.getAllWithTodos().then(response => {
-                    this.statuses = response.data
-                }).finally(() => {
+                try {
+                    this.getTodoStatuses();
+                } catch (err) {
+                    console.error(err)
+                } finally {
                     this.setAppBusy(false)
-                })
-            }
+                }
+            },
+            onFilterChanged() {
+                this.fetchData();
+            },
+            getDefaultFilter() {
+                this.filter = {
+                    todoTypes: []
+                }
+            },
+            getTodoStatuses() {
+                boardApi.search({
+                    filter: this.filter
+                }).then(response => {
+                    this.statuses = response.data
+                }).catch(err => console.error(err))
+            },
         },
     }
 </script>

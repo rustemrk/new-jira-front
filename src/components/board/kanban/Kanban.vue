@@ -5,7 +5,7 @@
                 v-for="status in statuses"
                 :key="status.id"
                 :status="status"
-                @dragEnd="saveKanbanOrder"
+                @dragEnd="saveOrder"
             />
         </div>
     </div>
@@ -13,7 +13,7 @@
 
 <script>
     import KanbanColumn from "@/components/board/kanban/KanbanColumn";
-    import todoApi from "@/api/todoApi";
+    import boardApi from "@/api/boardApi";
 
     export default {
         name: "Kanban",
@@ -21,14 +21,16 @@
             KanbanColumn,
         },
         props: {
-            statuses: null
+            statuses: null,
+            todos: null
         },
         methods: {
-            async saveKanbanOrder() {
+            async saveOrder() {
                 let result = [];
                 await this.actualizeKanbanOrder(this.statuses);
                 await this.getPreparedTodos(this.statuses, result);
-                todoApi.saveKanbanOrder(result);
+                boardApi.saveOrder(result)
+                    .catch(err => console.error(err));
             },
             actualizeKanbanOrder(statuses) {
                 statuses.map(status => {
@@ -45,11 +47,12 @@
                             statusId: todo.statusId,
                             kanbanOrder: todo.kanbanOrder
                         }
-                    })).forEach(el => {
-                    el.forEach(todo => {
-                        result.push(todo)
+                    }))
+                    .forEach(el => {
+                        el.forEach(todo => {
+                            result.push(todo)
+                        })
                     })
-                })
             }
         }
     }

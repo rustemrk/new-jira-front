@@ -17,8 +17,10 @@
         },
         methods: {
             go(route) {
-                router.push(route).catch(err => {
-                });
+                router.push(route)
+                    .catch(err => {
+                        console.error(err)
+                    });
             },
         }
     }

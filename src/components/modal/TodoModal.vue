@@ -191,7 +191,7 @@
                 this.loading = false;
             },
             async getTodoTypes() {
-                await todoTypeApi.list().then(response => {
+                await todoTypeApi.getAll().then(response => {
                     this.todoTypes = response.data
                 })
             },

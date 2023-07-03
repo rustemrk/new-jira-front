@@ -9,7 +9,7 @@ const todoStatusApi = {
     },
     getAllWithTodos: () => {
         return restHttpClient.get('/api/v1/todo-status/with-todos')
-    },
+    }
 }
 
 export default todoStatusApi

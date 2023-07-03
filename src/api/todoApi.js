@@ -9,9 +9,6 @@ const todoApi = {
     },
     update: (data) => {
         return restHttpClient.put('/api/v1/todo', data)
-    },
-    saveKanbanOrder: (data) => {
-        return restHttpClient.patch('/api/v1/todo/save-kanban-order', data)
     }
 }
 
